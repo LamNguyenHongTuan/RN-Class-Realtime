@@ -10,6 +10,7 @@ import { ReportScreen } from '../screens/ReportScreen';
 import { useBookingStore } from '../store/useBookingStore';
 import { VKULogo } from '../components/VKULogo';
 import { VKU_COLORS } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
 
 export type RootTabParamList = {
   Explore: undefined;
@@ -23,6 +24,7 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export const RootNavigator: React.FC = () => {
   const { bookings, user } = useBookingStore();
+  const theme = useTheme();
 
   const activeCount = bookings.filter(
     (b) => b.userId === user.id && (b.status === 'active' || b.status === 'checked_in')
@@ -53,10 +55,10 @@ export const RootNavigator: React.FC = () => {
           </View>
         ),
         tabBarActiveTintColor: VKU_COLORS.red,
-        tabBarInactiveTintColor: '#64748b',
+        tabBarInactiveTintColor: theme.textMuted,
         tabBarStyle: {
-          backgroundColor: '#ffffff',
-          borderTopColor: '#e2e8f0',
+          backgroundColor: theme.tabBar,
+          borderTopColor: theme.tabBorder,
           height: 62,
           paddingBottom: 8,
           paddingTop: 6,

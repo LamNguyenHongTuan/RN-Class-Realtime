@@ -55,6 +55,8 @@ export interface Booking {
   checkedInAt?: string;
 }
 
+export type ThemeMode = 'light' | 'dark';
+
 export interface UserProfile {
   id: string;
   studentId: string; // e.g. "21IT001"

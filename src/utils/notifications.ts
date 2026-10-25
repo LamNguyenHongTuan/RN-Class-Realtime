@@ -1,17 +1,28 @@
-import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { Booking } from '../types';
 
-// Configure notification behavior in foreground
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldPresentAlert: true,
-  }),
-});
+// Lazy-import expo-notifications ONLY on native platforms to avoid
+// "Cannot find native module 'ExpoTopicSubscriptionModule'" crash on web/PWA
+let Notifications: typeof import('expo-notifications') | null = null;
+
+if (Platform.OS !== 'web') {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    Notifications = require('expo-notifications');
+    // Configure notification behavior in foreground (native only)
+    Notifications?.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+        shouldShowBanner: true,
+        shouldPresentAlert: true,
+      }),
+    });
+  } catch (e) {
+    console.warn('[expo-notifications] Native module not available:', e);
+  }
+}
 
 export interface InAppAlert {
   id: string;
@@ -49,13 +60,19 @@ export async function requestNotificationPermission(): Promise<boolean> {
     return true;
   }
 
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-  if (existingStatus !== 'granted') {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
+  if (!Notifications) return false;
+  try {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    return finalStatus === 'granted';
+  } catch (e) {
+    console.warn('[expo-notifications] Permission request failed:', e);
+    return false;
   }
-  return finalStatus === 'granted';
 }
 
 /**
@@ -77,7 +94,7 @@ export async function sendImmediateNotification(title: string, body: string, boo
       if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
         new Notification(title, { body, icon: '/favicon.ico' });
       }
-    } else {
+    } else if (Notifications) {
       await Notifications.scheduleNotificationAsync({
         content: {
           title,
@@ -110,7 +127,7 @@ export async function scheduleBookingReminder(booking: Booking): Promise<void> {
 
   if (diffSeconds > 0) {
     try {
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== 'web' && Notifications) {
         await Notifications.scheduleNotificationAsync({
           content: {
             title: '🔔 VKU Check-in Reminder (15m Notice)',

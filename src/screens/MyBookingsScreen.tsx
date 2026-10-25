@@ -9,10 +9,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useBookingStore } from '../store/useBookingStore';
 import { Booking } from '../types';
+import { useTheme } from '../hooks/useTheme';
 
 export const MyBookingsScreen: React.FC = () => {
   const { bookings, user, openPassModal, cancelBooking } = useBookingStore();
   const [tabType, setTabType] = useState<'upcoming' | 'history'>('upcoming');
+  const theme = useTheme();
 
   const userBookings = bookings.filter((b) => b.userId === user.id);
 
@@ -31,7 +33,7 @@ export const MyBookingsScreen: React.FC = () => {
     const isCancelled = item.status === 'cancelled';
 
     return (
-      <View style={styles.bookingCard}>
+      <View style={[styles.bookingCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
         {/* Status stripe */}
         <View style={[
           styles.stripe,
@@ -45,7 +47,7 @@ export const MyBookingsScreen: React.FC = () => {
                 <Ionicons name="location-outline" size={12} color="#dc2626" />
                 <Text style={styles.metaText}>Bldg {item.building} • Pass: {item.passCode}</Text>
               </View>
-              <Text style={styles.roomName}>{item.roomName}</Text>
+              <Text style={[styles.roomName, { color: theme.textPrimary }]}>{item.roomName}</Text>
             </View>
 
             <View style={[
@@ -62,7 +64,7 @@ export const MyBookingsScreen: React.FC = () => {
           </View>
 
           {/* Time & Date Box */}
-          <View style={styles.timeBox}>
+          <View style={[styles.timeBox, { backgroundColor: theme.sectionBg }]}>
             <View style={styles.timeItem}>
               <Ionicons name="calendar-outline" size={13} color="#dc2626" />
               <Text style={styles.timeItemText}>{item.date}</Text>
@@ -99,23 +101,23 @@ export const MyBookingsScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.bg }]}>
       {/* Tab Switcher */}
-      <View style={styles.tabSwitchContainer}>
+      <View style={[styles.tabSwitchContainer, { backgroundColor: theme.isDark ? '#1e293b' : '#e2e8f0' }]}>
         <TouchableOpacity
-          style={[styles.switchBtn, tabType === 'upcoming' && styles.switchBtnActive]}
+          style={[styles.switchBtn, tabType === 'upcoming' && [styles.switchBtnActive, { backgroundColor: theme.card }]]}
           onPress={() => setTabType('upcoming')}
         >
-          <Text style={[styles.switchText, tabType === 'upcoming' && styles.switchTextActive]}>
+          <Text style={[styles.switchText, { color: theme.textMuted }, tabType === 'upcoming' && styles.switchTextActive]}>
             Active Passes ({upcomingBookings.length})
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.switchBtn, tabType === 'history' && styles.switchBtnActive]}
+          style={[styles.switchBtn, tabType === 'history' && [styles.switchBtnActive, { backgroundColor: theme.card }]]}
           onPress={() => setTabType('history')}
         >
-          <Text style={[styles.switchText, tabType === 'history' && styles.switchTextActive]}>
+          <Text style={[styles.switchText, { color: theme.textMuted }, tabType === 'history' && styles.switchTextActive]}>
             History ({historyBookings.length})
           </Text>
         </TouchableOpacity>
@@ -129,10 +131,10 @@ export const MyBookingsScreen: React.FC = () => {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="ticket-outline" size={48} color="#94a3b8" />
-            <Text style={styles.emptyTitle}>
+            <Text style={[styles.emptyTitle, { color: theme.textSecondary }]}>
               {tabType === 'upcoming' ? 'No active passes' : 'No reservation history'}
             </Text>
-            <Text style={styles.emptySub}>
+            <Text style={[styles.emptySub, { color: theme.textMuted }]}>
               {tabType === 'upcoming'
                 ? 'Reserve a 2-hour slot to access campus labs and study rooms.'
                 : 'Past bookings and cancellations will appear here.'}

@@ -10,11 +10,13 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useBookingStore } from '../store/useBookingStore';
 import { VKU_COLORS } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
 
 export const QRScannerScreen: React.FC = () => {
   const { checkInByPassCode, bookings } = useBookingStore();
   const [manualCode, setManualCode] = useState('');
   const [result, setResult] = useState<{ success: boolean; message: string; room?: string } | null>(null);
+  const theme = useTheme();
 
   const activeBookings = bookings.filter((b) => b.status === 'active');
 
@@ -36,9 +38,9 @@ export const QRScannerScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.screenTitle}>Door Access Scanner</Text>
-      <Text style={styles.screenSub}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.bg }]} contentContainerStyle={styles.content}>
+      <Text style={[styles.screenTitle, { color: theme.textPrimary }]}>Door Access Scanner</Text>
+      <Text style={[styles.screenSub, { color: theme.textMuted }]}>
         Point camera at the room door scanner or enter your pass code
       </Text>
 
@@ -82,11 +84,11 @@ export const QRScannerScreen: React.FC = () => {
       )}
 
       {/* Manual Code Input */}
-      <View style={styles.inputCard}>
-        <Text style={styles.inputCardLabel}>ENTER PASS CODE MANUALLY</Text>
+      <View style={[styles.inputCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+        <Text style={[styles.inputCardLabel, { color: theme.textMuted }]}>ENTER PASS CODE MANUALLY</Text>
         <View style={styles.inputRow}>
           <TextInput
-            style={styles.codeInput}
+            style={[styles.codeInput, { backgroundColor: theme.sectionBg, borderColor: theme.border, color: theme.textPrimary }]}
             placeholder="e.g. VKU-V401-7821"
             placeholderTextColor="#94a3b8"
             autoCapitalize="characters"
@@ -105,20 +107,20 @@ export const QRScannerScreen: React.FC = () => {
 
       {/* Quick Test Passes */}
       {activeBookings.length > 0 && (
-        <View style={styles.quickTestCard}>
+        <View style={[styles.quickTestCard, { backgroundColor: theme.sectionBg, borderColor: theme.border }]}>
           <View style={styles.quickTestHeader}>
             <Ionicons name="flash" size={14} color={VKU_COLORS.gold} />
-            <Text style={styles.quickTestTitle}>Quick-Test Active Passes (1-Click):</Text>
+            <Text style={[styles.quickTestTitle, { color: theme.textSecondary }]}>Quick-Test Active Passes (1-Click):</Text>
           </View>
           <View style={styles.quickTestWrap}>
             {activeBookings.map((b) => (
               <TouchableOpacity
                 key={b.id}
-                style={styles.quickPill}
+                style={[styles.quickPill, { backgroundColor: theme.card, borderColor: theme.border }]}
                 onPress={() => handleValidate(b.passCode)}
               >
                 <View style={styles.greenDot} />
-                <Text style={styles.quickPillText}>{b.passCode}</Text>
+                <Text style={[styles.quickPillText, { color: theme.textPrimary }]}>{b.passCode}</Text>
                 <Text style={styles.quickPillSub}>({b.roomName.split(' ')[0]})</Text>
               </TouchableOpacity>
             ))}

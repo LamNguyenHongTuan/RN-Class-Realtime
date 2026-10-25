@@ -11,6 +11,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Room, EquipmentType } from '../types';
 import { VKU_COLORS } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
 
 interface RoomCardProps {
   room: Room;
@@ -34,6 +35,7 @@ const getBuildingColor = (code: string) => {
 };
 
 const EquipmentBadge: React.FC<{ type: EquipmentType }> = ({ type }) => {
+  const theme = useTheme();
   const getIcon = () => {
     switch (type) {
       case 'Projector':
@@ -54,9 +56,9 @@ const EquipmentBadge: React.FC<{ type: EquipmentType }> = ({ type }) => {
   };
 
   return (
-    <View style={styles.badgeContainer}>
+    <View style={[styles.badgeContainer, { backgroundColor: theme.sectionBg }]}>
       {getIcon()}
-      <Text style={styles.badgeText}>{type}</Text>
+      <Text style={[styles.badgeText, { color: theme.textSecondary }]}>{type}</Text>
     </View>
   );
 };
@@ -64,9 +66,10 @@ const EquipmentBadge: React.FC<{ type: EquipmentType }> = ({ type }) => {
 export const RoomCard: React.FC<RoomCardProps> = React.memo(
   ({ room, onBook, isOccupiedNow }) => {
     const buildingColor = getBuildingColor(room.building);
+    const theme = useTheme();
 
     return (
-      <View style={styles.cardContainer}>
+      <View style={[styles.cardContainer, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
         {/* Photo Container */}
         <View style={styles.photoContainer}>
           <Image
@@ -121,17 +124,17 @@ export const RoomCard: React.FC<RoomCardProps> = React.memo(
         <View style={styles.cardBody}>
           {/* Capacity & Code Meta */}
           <View style={styles.metaRow}>
-            <View style={styles.capacityBadge}>
+            <View style={[styles.capacityBadge, { backgroundColor: theme.sectionBg, borderColor: theme.border }]}>
               <Ionicons name="people-outline" size={14} color={VKU_COLORS.blue} />
-              <Text style={styles.capacityText}>
-                Capacity: <Text style={styles.capacityBold}>{room.capacity} students</Text>
+              <Text style={[styles.capacityText, { color: theme.textMuted }]}>
+                Capacity: <Text style={[styles.capacityBold, { color: theme.textPrimary }]}>{room.capacity} students</Text>
               </Text>
             </View>
-            <Text style={styles.roomNumberText}>#{room.roomNumber}</Text>
+            <Text style={[styles.roomNumberText, { color: theme.textSubtle }]}>#{room.roomNumber}</Text>
           </View>
 
           {/* Description */}
-          <Text style={styles.descriptionText} numberOfLines={2}>
+          <Text style={[styles.descriptionText, { color: theme.textMuted }]} numberOfLines={2}>
             {room.description}
           </Text>
 
@@ -143,10 +146,10 @@ export const RoomCard: React.FC<RoomCardProps> = React.memo(
           </View>
 
           {/* Action Row */}
-          <View style={styles.actionRow}>
+          <View style={[styles.actionRow, { borderTopColor: theme.divider }]}>
             <View style={styles.instantConfirmWrapper}>
               <Ionicons name="checkmark-circle" size={14} color="#10b981" />
-              <Text style={styles.instantConfirmText}>Instant Confirmation</Text>
+              <Text style={[styles.instantConfirmText, { color: theme.textMuted }]}>Instant Confirmation</Text>
             </View>
 
             <TouchableOpacity

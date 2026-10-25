@@ -2,11 +2,11 @@ import { Booking, UserProfile } from '../types';
 
 export const INITIAL_USER: UserProfile = {
   id: 'usr-vku-21it001',
-  studentId: '21IT001',
-  fullName: 'Nguyen Van A',
-  email: 'anv.21it@vku.udn.vn',
-  department: 'Faculty of Computer Science & Software Engineering',
-  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+  studentId: '23ITB',
+  fullName: 'Nguyễn Hồng Tuấn Lâm',
+  email: 'lamnht.23itb@vku.udn.vn',
+  department: 'Faculty of Information Technology (ITB)',
+  avatarUrl: 'https://api.dicebear.com/7.x/micah/png?seed=LamVKU&backgroundColor=1f3360',
   notificationEnabled: true,
 };
 

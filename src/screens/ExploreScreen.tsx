@@ -12,9 +12,11 @@ import { RoomCard } from '../components/RoomCard';
 import { Room } from '../types';
 import { useBookingStore } from '../store/useBookingStore';
 import { isRoomCurrentlyOccupied } from '../utils/conflicts';
+import { useTheme } from '../hooks/useTheme';
 
 export const ExploreScreen: React.FC = () => {
   const { rooms, bookings, filters, openBookingModal, resetFilters } = useBookingStore();
+  const theme = useTheme();
 
   const handleBook = useCallback(
     (room: Room) => {
@@ -88,7 +90,7 @@ export const ExploreScreen: React.FC = () => {
   const keyExtractor = useCallback((item: Room) => item.id, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.bg }]}>
       {/* Sticky Filter Bar */}
       <FilterBar />
 
@@ -104,7 +106,7 @@ export const ExploreScreen: React.FC = () => {
         removeClippedSubviews={true}
         ListHeaderComponent={
           <View style={styles.listHeader}>
-            <Text style={styles.listHeaderTitle}>
+            <Text style={[styles.listHeaderTitle, { color: theme.textMuted }]}>
               Showing {filteredRooms.length} available study {filteredRooms.length === 1 ? 'room' : 'rooms'}
             </Text>
             <Text style={styles.fpsBadge}>FlatList 60fps Scrolling</Text>
@@ -113,8 +115,8 @@ export const ExploreScreen: React.FC = () => {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Ionicons name="search-outline" size={48} color="#94a3b8" />
-            <Text style={styles.emptyTitle}>No study rooms found</Text>
-            <Text style={styles.emptySubtext}>
+            <Text style={[styles.emptyTitle, { color: theme.textSecondary }]}>No study rooms found</Text>
+            <Text style={[styles.emptySubtext, { color: theme.textMuted }]}>
               Try adjusting your building, capacity or equipment filter chips.
             </Text>
             <TouchableOpacity style={styles.resetEmptyBtn} onPress={resetFilters}>

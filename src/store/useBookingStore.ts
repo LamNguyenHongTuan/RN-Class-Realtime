@@ -7,7 +7,8 @@ import {
   UserProfile, 
   FilterState, 
   BuildingCode, 
-  EquipmentType 
+  EquipmentType,
+  ThemeMode
 } from '../types';
 import { INITIAL_ROOMS } from '../data/mockRooms';
 import { INITIAL_USER, getInitialBookings } from '../data/mockBookings';
@@ -65,6 +66,11 @@ interface BookingStoreState {
 
   // Reset demo
   resetDemoData: () => void;
+
+  // Theme
+  themeMode: ThemeMode;
+  toggleTheme: () => void;
+  setThemeMode: (mode: ThemeMode) => void;
 }
 
 const defaultFilters: FilterState = {
@@ -82,6 +88,8 @@ export const useBookingStore = create<BookingStoreState>()(
       rooms: INITIAL_ROOMS,
       bookings: getInitialBookings(),
       filters: defaultFilters,
+
+      themeMode: 'light' as ThemeMode,
 
       selectedRoomForBooking: null,
       selectedBookingForPass: null,
@@ -262,6 +270,10 @@ export const useBookingStore = create<BookingStoreState>()(
           user: INITIAL_USER,
         });
       },
+
+      toggleTheme: () =>
+        set((state) => ({ themeMode: state.themeMode === 'light' ? 'dark' : 'light' })),
+      setThemeMode: (mode) => set({ themeMode: mode }),
     }),
     {
       name: 'vku-booking-storage-async',

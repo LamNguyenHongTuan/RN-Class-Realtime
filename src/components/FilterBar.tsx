@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { BuildingCode, EquipmentType } from '../types';
 import { useBookingStore } from '../store/useBookingStore';
 import { VKU_COLORS } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
 
 const BUILDINGS: { code: BuildingCode | 'ALL'; label: string; color: string }[] = [
   { code: 'ALL', label: 'All', color: VKU_COLORS.blue },
@@ -41,6 +42,7 @@ export const FilterBar: React.FC = () => {
     toggleOnlyAvailableNow,
     resetFilters,
   } = useBookingStore();
+  const theme = useTheme();
 
   const [isAdvancedVisible, setIsAdvancedVisible] = useState(false);
 
@@ -51,13 +53,13 @@ export const FilterBar: React.FC = () => {
     (filters.onlyAvailableNow ? 1 : 0);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.card, borderBottomColor: theme.border }]}>
       {/* Search Input Row */}
       <View style={styles.searchRow}>
-        <View style={styles.searchInputWrapper}>
+        <View style={[styles.searchInputWrapper, { backgroundColor: theme.searchBg, borderColor: theme.border }]}>
           <Ionicons name="search" size={16} color={VKU_COLORS.blue} style={styles.searchIcon} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.textPrimary }]}
             placeholder="Search room (e.g. Lab V-401, B-305)..."
             placeholderTextColor="#94a3b8"
             value={filters.searchQuery}
@@ -71,7 +73,7 @@ export const FilterBar: React.FC = () => {
         </View>
 
         <TouchableOpacity 
-          style={[styles.filterToggleBtn, (isAdvancedVisible || activeFiltersCount > 0) && styles.filterToggleActive]}
+          style={[styles.filterToggleBtn, { backgroundColor: theme.searchBg, borderColor: theme.border }, (isAdvancedVisible || activeFiltersCount > 0) && styles.filterToggleActive]}
           onPress={() => setIsAdvancedVisible(!isAdvancedVisible)}
         >
           <Ionicons 
@@ -99,12 +101,13 @@ export const FilterBar: React.FC = () => {
             <TouchableOpacity
               key={b.code}
               style={[
-                styles.chip, 
+                styles.chip,
+                { backgroundColor: theme.chipBg, borderColor: theme.chipBorderColor },
                 isSelected && { backgroundColor: b.color, borderColor: b.color }
               ]}
               onPress={() => setSelectedBuilding(b.code)}
             >
-              <Text style={[styles.chipText, isSelected && styles.chipTextActive]}>
+              <Text style={[styles.chipText, { color: theme.chipText }, isSelected && styles.chipTextActive]}>
                 {b.label}
               </Text>
             </TouchableOpacity>
@@ -115,11 +118,11 @@ export const FilterBar: React.FC = () => {
 
         {/* Quick Available Now chip */}
         <TouchableOpacity
-          style={[styles.chip, filters.onlyAvailableNow && styles.chipGreenActive]}
+          style={[styles.chip, { backgroundColor: theme.chipBg, borderColor: theme.chipBorderColor }, filters.onlyAvailableNow && styles.chipGreenActive]}
           onPress={toggleOnlyAvailableNow}
         >
           <View style={[styles.dot, { backgroundColor: filters.onlyAvailableNow ? '#ffffff' : '#10b981' }]} />
-          <Text style={[styles.chipText, filters.onlyAvailableNow && styles.chipTextActive]}>
+          <Text style={[styles.chipText, { color: theme.chipText }, filters.onlyAvailableNow && styles.chipTextActive]}>
             Available Now
           </Text>
         </TouchableOpacity>
@@ -134,19 +137,19 @@ export const FilterBar: React.FC = () => {
 
       {/* Collapsible Advanced Filters */}
       {isAdvancedVisible && (
-        <View style={styles.advancedContainer}>
+        <View style={[styles.advancedContainer, { borderTopColor: theme.divider }]}>
           {/* Capacity options */}
-          <Text style={styles.sectionLabel}>Minimum Capacity:</Text>
+          <Text style={[styles.sectionLabel, { color: theme.textMuted }]}>Minimum Capacity:</Text>
           <View style={styles.capacityRow}>
             {CAPACITIES.map((cap) => {
               const isSelected = filters.minCapacity === cap;
               return (
                 <TouchableOpacity
                   key={cap}
-                  style={[styles.capacityBtn, isSelected && styles.capacityBtnActive]}
+                  style={[styles.capacityBtn, { backgroundColor: theme.capacityBg, borderColor: theme.border }, isSelected && styles.capacityBtnActive]}
                   onPress={() => setMinCapacity(cap)}
                 >
-                  <Text style={[styles.capacityBtnText, isSelected && styles.capacityBtnTextActive]}>
+                  <Text style={[styles.capacityBtnText, { color: theme.textSecondary }, isSelected && styles.capacityBtnTextActive]}>
                     {cap === 0 ? 'Any' : `${cap}+`}
                   </Text>
                 </TouchableOpacity>
@@ -155,18 +158,18 @@ export const FilterBar: React.FC = () => {
           </View>
 
           {/* Equipment multi-select */}
-          <Text style={[styles.sectionLabel, { marginTop: 10 }]}>Required Equipment:</Text>
+          <Text style={[styles.sectionLabel, { marginTop: 10, color: theme.textMuted }]}>Required Equipment:</Text>
           <View style={styles.equipmentWrap}>
             {ALL_EQUIPMENT.map((eq) => {
               const isSelected = filters.selectedEquipment.includes(eq);
               return (
                 <TouchableOpacity
                   key={eq}
-                  style={[styles.eqBtn, isSelected && styles.eqBtnActive]}
+                  style={[styles.eqBtn, { backgroundColor: theme.capacityBg, borderColor: theme.border }, isSelected && styles.eqBtnActive]}
                   onPress={() => toggleEquipment(eq)}
                 >
                   {isSelected && <Ionicons name="checkmark" size={12} color="#ffffff" style={{ marginRight: 3 }} />}
-                  <Text style={[styles.eqBtnText, isSelected && styles.eqBtnTextActive]}>
+                  <Text style={[styles.eqBtnText, { color: theme.textSecondary }, isSelected && styles.eqBtnTextActive]}>
                     {eq}
                   </Text>
                 </TouchableOpacity>
