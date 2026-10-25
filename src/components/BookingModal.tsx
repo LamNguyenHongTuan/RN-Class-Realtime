@@ -6,13 +6,13 @@ import {
   Modal, 
   TouchableOpacity, 
   ScrollView, 
-  TextInput, 
-  Platform 
+  TextInput 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useBookingStore } from '../store/useBookingStore';
 import { TIME_SLOTS, getUpcoming7Days, checkSlotConflict } from '../utils/conflicts';
+import { VKU_COLORS } from '../constants/colors';
 
 export const BookingModal: React.FC = () => {
   const { 
@@ -80,14 +80,16 @@ export const BookingModal: React.FC = () => {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalSheet}>
-          {/* Header */}
+          {/* Header Gradient using Navy Blue and VKU Red */}
           <LinearGradient
-            colors={['#dc2626', '#b91c1c']}
+            colors={[VKU_COLORS.darkBlue, VKU_COLORS.red]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
             style={styles.modalHeader}
           >
             <View style={{ flex: 1 }}>
               <View style={styles.headerSubtitleRow}>
-                <Ionicons name="location" size={12} color="#fca5a5" />
+                <Ionicons name="location" size={12} color={VKU_COLORS.gold} />
                 <Text style={styles.headerSubtitleText}>
                   Building {room.building} • Floor {room.floor}
                 </Text>
@@ -130,7 +132,7 @@ export const BookingModal: React.FC = () => {
               })}
             </ScrollView>
             <Text style={styles.dateSubtext}>
-              Selected: <Text style={{ fontWeight: '700', color: '#0f172a' }}>{currentDay.fullLabel}</Text>
+              Selected: <Text style={{ fontWeight: '700', color: VKU_COLORS.blue }}>{currentDay.fullLabel}</Text>
             </Text>
 
             {/* Time Slot Selector & Conflict Engine */}
@@ -219,7 +221,7 @@ export const BookingModal: React.FC = () => {
 
             {errorMessage && (
               <View style={styles.errorBox}>
-                <Ionicons name="alert-circle" size={16} color="#dc2626" style={{ marginRight: 6 }} />
+                <Ionicons name="alert-circle" size={16} color={VKU_COLORS.red} style={{ marginRight: 6 }} />
                 <Text style={styles.errorText}>{errorMessage}</Text>
               </View>
             )}
@@ -283,15 +285,16 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   headerMeta: {
-    color: '#fecaca',
+    color: '#fef08a',
     fontSize: 12,
     marginTop: 2,
+    fontWeight: '600',
   },
   closeBtn: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.25)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -321,8 +324,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   dateCardActive: {
-    backgroundColor: '#dc2626',
-    borderColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
+    borderColor: VKU_COLORS.red,
   },
   dayNameText: {
     fontSize: 10,
@@ -375,7 +378,7 @@ const styles = StyleSheet.create({
   },
   slotItemActive: {
     backgroundColor: '#fef2f2',
-    borderColor: '#dc2626',
+    borderColor: VKU_COLORS.red,
     borderWidth: 2,
   },
   slotTopRow: {
@@ -390,7 +393,7 @@ const styles = StyleSheet.create({
     color: '#0f172a',
   },
   slotLabelActive: {
-    color: '#991b1b',
+    color: VKU_COLORS.red,
   },
   slotStatusBadge: {
     paddingHorizontal: 8,
@@ -404,7 +407,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fee2e2',
   },
   badgeSelected: {
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
   },
   slotStatusText: {
     fontSize: 10,
@@ -415,7 +418,7 @@ const styles = StyleSheet.create({
     color: '#059669',
   },
   textOccupied: {
-    color: '#b91c1c',
+    color: VKU_COLORS.red,
   },
   textSelected: {
     color: '#ffffff',
@@ -431,8 +434,8 @@ const styles = StyleSheet.create({
   },
   conflictUserText: {
     fontSize: 11,
-    color: '#d97706',
-    fontWeight: '600',
+    color: VKU_COLORS.gold,
+    fontWeight: '700',
   },
   input: {
     backgroundColor: '#f8fafc',
@@ -476,7 +479,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   errorText: {
-    color: '#b91c1c',
+    color: VKU_COLORS.red,
     fontSize: 12,
     fontWeight: '600',
     flex: 1,
@@ -505,7 +508,7 @@ const styles = StyleSheet.create({
     flex: 2,
     height: 44,
     borderRadius: 12,
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

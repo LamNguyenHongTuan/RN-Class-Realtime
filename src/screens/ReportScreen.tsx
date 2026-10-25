@@ -8,6 +8,8 @@ import {
   Platform 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { VKULogo } from '../components/VKULogo';
+import { VKU_COLORS } from '../constants/colors';
 
 export const ReportScreen: React.FC = () => {
   const handlePrint = () => {
@@ -18,7 +20,7 @@ export const ReportScreen: React.FC = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* Print action button for Web/PWA */}
+      {/* Print action bar for Web/PWA */}
       {Platform.OS === 'web' && (
         <View style={styles.actionBar}>
           <View style={{ flex: 1 }}>
@@ -36,10 +38,15 @@ export const ReportScreen: React.FC = () => {
 
       {/* Report Document */}
       <View style={styles.reportSheet}>
-        {/* Header */}
+        {/* Header with Official Logo */}
         <View style={styles.docHeader}>
-          <Text style={styles.univText}>VIETNAM - KOREA UNIVERSITY OF ICT (VKU)</Text>
-          <Text style={styles.reportTitle}>MINI-PROJECT 2 TECHNICAL REPORT</Text>
+          <View style={styles.logoRow}>
+            <VKULogo width={90} height={46} />
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={styles.univText}>VIETNAM - KOREA UNIVERSITY OF ICT (VKU)</Text>
+              <Text style={styles.reportTitle}>MINI-PROJECT 2 TECHNICAL REPORT</Text>
+            </View>
+          </View>
           <Text style={styles.reportSubtitle}>
             Real-time Study Room Booking App (React Native & Expo SDK)
           </Text>
@@ -55,7 +62,7 @@ export const ReportScreen: React.FC = () => {
             VKU students and study squads require a fast, reliable mobile app to check real-time availability and reserve campus computer labs and study rooms without physical door checks or booking collisions across Buildings A, B, C, and V.
           </Text>
           <Text style={styles.bodyText}>
-            This application is constructed using React Native, Expo SDK, TypeScript, Zustand with AsyncStorage persistence, and React Navigation.
+            This application is constructed using React Native, Expo SDK, TypeScript, Zustand with AsyncStorage persistence, and React Navigation. The UI is designed according to VKU's brand identity with 3 core colors: Crimson Red (#C81F32), Gold/Orange (#F6961E), and Navy Blue (#364E8A).
           </Text>
         </View>
 
@@ -132,9 +139,9 @@ const styles = StyleSheet.create({
     paddingBottom: 90,
   },
   actionBar: {
-    backgroundColor: '#fee2e2',
+    backgroundColor: VKU_COLORS.lightBlue,
     borderWidth: 1,
-    borderColor: '#fca5a5',
+    borderColor: '#c7d2fe',
     borderRadius: 16,
     padding: 14,
     flexDirection: 'row',
@@ -145,14 +152,14 @@ const styles = StyleSheet.create({
   actionBarTitle: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#991b1b',
+    color: VKU_COLORS.darkBlue,
   },
   actionBarSub: {
     fontSize: 11,
-    color: '#b91c1c',
+    color: VKU_COLORS.blue,
   },
   printBtn: {
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -174,20 +181,25 @@ const styles = StyleSheet.create({
   },
   docHeader: {
     borderBottomWidth: 2,
-    borderBottomColor: '#0f172a',
+    borderBottomColor: VKU_COLORS.blue,
     paddingBottom: 12,
     marginBottom: 16,
+  },
+  logoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
   },
   univText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#dc2626',
+    color: VKU_COLORS.red,
     letterSpacing: 0.5,
   },
   reportTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '900',
-    color: '#0f172a',
+    color: VKU_COLORS.darkBlue,
     marginTop: 2,
   },
   reportSubtitle: {
@@ -207,9 +219,9 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#0f172a',
+    color: VKU_COLORS.darkBlue,
     borderLeftWidth: 4,
-    borderLeftColor: '#dc2626',
+    borderLeftColor: VKU_COLORS.red,
     paddingLeft: 8,
     marginBottom: 8,
   },
@@ -230,7 +242,7 @@ const styles = StyleSheet.create({
   checkTitle: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#0f172a',
+    color: VKU_COLORS.darkBlue,
     marginBottom: 4,
   },
   checkItem: {

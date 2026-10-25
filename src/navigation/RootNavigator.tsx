@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { ExploreScreen } from '../screens/ExploreScreen';
@@ -7,6 +8,8 @@ import { QRScannerScreen } from '../screens/QRScannerScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ReportScreen } from '../screens/ReportScreen';
 import { useBookingStore } from '../store/useBookingStore';
+import { VKULogo } from '../components/VKULogo';
+import { VKU_COLORS } from '../constants/colors';
 
 export type RootTabParamList = {
   Explore: undefined;
@@ -29,25 +32,38 @@ export const RootNavigator: React.FC = () => {
     <Tab.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#dc2626',
+          backgroundColor: VKU_COLORS.darkBlue,
+          elevation: 4,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.15,
+          shadowRadius: 4,
         },
         headerTintColor: '#ffffff',
         headerTitleStyle: {
           fontWeight: '800',
           fontSize: 16,
+          color: '#ffffff',
         },
-        tabBarActiveTintColor: '#dc2626',
+        headerLeft: () => (
+          <View style={styles.headerLeftContainer}>
+            <View style={styles.logoBadgeContainer}>
+              <VKULogo width={54} height={28} />
+            </View>
+          </View>
+        ),
+        tabBarActiveTintColor: VKU_COLORS.red,
         tabBarInactiveTintColor: '#64748b',
         tabBarStyle: {
           backgroundColor: '#ffffff',
           borderTopColor: '#e2e8f0',
-          height: 60,
+          height: 62,
           paddingBottom: 8,
           paddingTop: 6,
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: '600',
+          fontWeight: '700',
         },
       }}
     >
@@ -55,7 +71,7 @@ export const RootNavigator: React.FC = () => {
         name="Explore"
         component={ExploreScreen}
         options={{
-          headerTitle: 'VKU StudySpot',
+          headerTitle: 'StudySpot',
           tabBarLabel: 'Explore',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="compass-outline" size={size} color={color} />
@@ -70,6 +86,11 @@ export const RootNavigator: React.FC = () => {
           headerTitle: 'My Reservations',
           tabBarLabel: 'Bookings',
           tabBarBadge: activeCount > 0 ? activeCount : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: VKU_COLORS.gold,
+            color: '#ffffff',
+            fontWeight: '800',
+          },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ticket-outline" size={size} color={color} />
           ),
@@ -104,7 +125,7 @@ export const RootNavigator: React.FC = () => {
         name="Report"
         component={ReportScreen}
         options={{
-          headerTitle: 'Official Technical Report',
+          headerTitle: 'Technical Report',
           tabBarLabel: 'Report PDF',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="document-text-outline" size={size} color={color} />
@@ -114,3 +135,22 @@ export const RootNavigator: React.FC = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  headerLeftContainer: {
+    paddingLeft: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoBadgeContainer: {
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+});

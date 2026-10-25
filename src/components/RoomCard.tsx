@@ -10,6 +10,7 @@ import {
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Room, EquipmentType } from '../types';
+import { VKU_COLORS } from '../constants/colors';
 
 interface RoomCardProps {
   room: Room;
@@ -17,21 +18,36 @@ interface RoomCardProps {
   isOccupiedNow: boolean;
 }
 
+const getBuildingColor = (code: string) => {
+  switch (code) {
+    case 'A':
+      return VKU_COLORS.red;
+    case 'B':
+      return VKU_COLORS.blue;
+    case 'C':
+      return '#059669';
+    case 'V':
+      return VKU_COLORS.gold;
+    default:
+      return VKU_COLORS.blue;
+  }
+};
+
 const EquipmentBadge: React.FC<{ type: EquipmentType }> = ({ type }) => {
   const getIcon = () => {
     switch (type) {
       case 'Projector':
-        return <MaterialCommunityIcons name="projector" size={12} color="#4f46e5" />;
+        return <MaterialCommunityIcons name="projector" size={12} color={VKU_COLORS.blue} />;
       case 'High-spec PC':
-        return <Ionicons name="desktop-outline" size={12} color="#2563eb" />;
+        return <Ionicons name="desktop-outline" size={12} color={VKU_COLORS.red} />;
       case 'Whiteboard':
         return <MaterialCommunityIcons name="whiteboard" size={12} color="#059669" />;
       case 'Air Conditioner':
         return <MaterialCommunityIcons name="air-conditioner" size={12} color="#0891b2" />;
       case 'Smart TV':
-        return <Ionicons name="tv-outline" size={12} color="#7c3aed" />;
+        return <Ionicons name="tv-outline" size={12} color={VKU_COLORS.gold} />;
       case 'High-Speed LAN':
-        return <Ionicons name="wifi-outline" size={12} color="#d97706" />;
+        return <Ionicons name="wifi-outline" size={12} color={VKU_COLORS.blue} />;
       default:
         return <Ionicons name="sparkles-outline" size={12} color="#64748b" />;
     }
@@ -45,11 +61,10 @@ const EquipmentBadge: React.FC<{ type: EquipmentType }> = ({ type }) => {
   );
 };
 
-/**
- * 60fps Memoized RoomCard for FlatList Virtualization
- */
 export const RoomCard: React.FC<RoomCardProps> = React.memo(
   ({ room, onBook, isOccupiedNow }) => {
+    const buildingColor = getBuildingColor(room.building);
+
     return (
       <View style={styles.cardContainer}>
         {/* Photo Container */}
@@ -60,13 +75,13 @@ export const RoomCard: React.FC<RoomCardProps> = React.memo(
             resizeMode="cover"
           />
           <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.85)']}
+            colors={['transparent', 'rgba(15, 23, 42, 0.88)']}
             style={styles.gradientOverlay}
           />
 
-          {/* Building & Floor Tag */}
-          <View style={styles.buildingTag}>
-            <Ionicons name="location" size={12} color="#f87171" />
+          {/* Building & Floor Tag with VKU Color */}
+          <View style={[styles.buildingTag, { borderColor: buildingColor }]}>
+            <View style={[styles.buildingDot, { backgroundColor: buildingColor }]} />
             <Text style={styles.buildingTagText}>
               Bldg {room.building} • Fl. {room.floor}
             </Text>
@@ -89,14 +104,14 @@ export const RoomCard: React.FC<RoomCardProps> = React.memo(
 
           {/* Photo Bottom Label */}
           <View style={styles.photoBottomContent}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginRight: 8 }}>
               <Text style={styles.campusCategoryText}>VKU CAMPUS SPACE</Text>
               <Text style={styles.roomTitle} numberOfLines={1}>
                 {room.name}
               </Text>
             </View>
             <View style={styles.ratingBadge}>
-              <Ionicons name="star" size={11} color="#f59e0b" />
+              <Ionicons name="star" size={11} color={VKU_COLORS.gold} />
               <Text style={styles.ratingText}>{room.rating.toFixed(1)}</Text>
             </View>
           </View>
@@ -107,7 +122,7 @@ export const RoomCard: React.FC<RoomCardProps> = React.memo(
           {/* Capacity & Code Meta */}
           <View style={styles.metaRow}>
             <View style={styles.capacityBadge}>
-              <Ionicons name="people-outline" size={14} color="#dc2626" />
+              <Ionicons name="people-outline" size={14} color={VKU_COLORS.blue} />
               <Text style={styles.capacityText}>
                 Capacity: <Text style={styles.capacityBold}>{room.capacity} students</Text>
               </Text>
@@ -202,14 +217,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
+    borderWidth: 1.5,
+  },
+  buildingDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginRight: 5,
   },
   buildingTagText: {
     color: '#ffffff',
     fontSize: 11,
-    fontWeight: '600',
-    marginLeft: 4,
+    fontWeight: '700',
   },
   statusTagWrapper: {
     position: 'absolute',
@@ -227,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#059669',
   },
   statusOccupied: {
-    backgroundColor: '#d97706',
+    backgroundColor: VKU_COLORS.gold,
   },
   pulseDot: {
     width: 6,
@@ -251,7 +270,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   campusCategoryText: {
-    color: '#fca5a5',
+    color: VKU_COLORS.gold,
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 0.5,
@@ -358,7 +377,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   bookButton: {
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 14,

@@ -5,14 +5,15 @@ import {
   StyleSheet, 
   Modal, 
   TouchableOpacity, 
-  ScrollView, 
-  Alert 
+  ScrollView 
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useBookingStore } from '../store/useBookingStore';
 import { sendImmediateNotification } from '../utils/notifications';
+import { VKULogo } from './VKULogo';
+import { VKU_COLORS } from '../constants/colors';
 
 export const QRCodeModal: React.FC = () => {
   const { 
@@ -65,18 +66,25 @@ export const QRCodeModal: React.FC = () => {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.passSheet}>
-          {/* Header Gradient */}
+          {/* Header Gradient using VKU Navy Blue & VKU Red */}
           <LinearGradient
-            colors={['#dc2626', '#b91c1c']}
+            colors={[VKU_COLORS.darkBlue, VKU_COLORS.red]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
             style={styles.passHeader}
           >
             <TouchableOpacity style={styles.closeBtn} onPress={closePassModal}>
               <Ionicons name="close" size={20} color="#ffffff" />
             </TouchableOpacity>
 
-            <View style={styles.badgePill}>
-              <Ionicons name="sparkles" size={12} color="#fef08a" />
-              <Text style={styles.badgePillText}>VKU Digital Room Access Pass</Text>
+            <View style={styles.logoRow}>
+              <View style={styles.logoCardWrapper}>
+                <VKULogo width={60} height={30} />
+              </View>
+              <View style={styles.badgePill}>
+                <Ionicons name="sparkles" size={12} color={VKU_COLORS.gold} />
+                <Text style={styles.badgePillText}>Digital Access Pass</Text>
+              </View>
             </View>
 
             <Text style={styles.passRoomTitle}>{booking.roomName}</Text>
@@ -162,7 +170,7 @@ export const QRCodeModal: React.FC = () => {
                 style={styles.reminderTestBtn}
                 onPress={handleTriggerTestReminder}
               >
-                <Ionicons name="notifications-outline" size={16} color="#d97706" />
+                <Ionicons name="notifications-outline" size={16} color={VKU_COLORS.gold} />
                 <Text style={styles.reminderTestText}>Test 15-Minute Reminder Alert</Text>
               </TouchableOpacity>
 
@@ -233,9 +241,22 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.25)',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 10,
+  },
+  logoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  logoCardWrapper: {
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 8,
   },
   badgePill: {
     flexDirection: 'row',
@@ -244,7 +265,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 14,
-    marginBottom: 6,
   },
   badgePillText: {
     color: '#ffffff',
@@ -331,7 +351,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   statusReadyText: {
-    color: '#b91c1c',
+    color: VKU_COLORS.red,
     fontSize: 11,
     fontWeight: '800',
     marginLeft: 4,
@@ -349,7 +369,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
   },
   qrWrapper: {
     padding: 10,
@@ -368,7 +388,7 @@ const styles = StyleSheet.create({
   passCodeValue: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#0f172a',
+    color: VKU_COLORS.blue,
     letterSpacing: 1,
   },
   metaList: {
@@ -409,7 +429,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   reminderTestBtn: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: VKU_COLORS.lightGold,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -420,7 +440,7 @@ const styles = StyleSheet.create({
   reminderTestText: {
     color: '#92400e',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   cancelPassBtn: {
     flexDirection: 'row',
@@ -443,7 +463,7 @@ const styles = StyleSheet.create({
   },
   confirmCancelQuestion: {
     fontSize: 12,
-    color: '#b91c1c',
+    color: VKU_COLORS.red,
     fontWeight: '700',
     marginBottom: 8,
   },
@@ -465,7 +485,7 @@ const styles = StyleSheet.create({
   },
   btnConfirmCancel: {
     flex: 1,
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
     paddingVertical: 6,
     alignItems: 'center',
     borderRadius: 8,

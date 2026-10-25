@@ -12,6 +12,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useBookingStore } from '../store/useBookingStore';
 import { sendImmediateNotification } from '../utils/notifications';
+import { VKULogo } from '../components/VKULogo';
+import { VKU_COLORS } from '../constants/colors';
 
 export const ProfileScreen: React.FC = () => {
   const { user, updateUser, bookings, resetDemoData } = useBookingStore();
@@ -30,18 +32,18 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* VKU Virtual Student ID Card */}
+      {/* VKU Virtual Student ID Card with Official Logo */}
       <LinearGradient
-        colors={['#dc2626', '#b91c1c', '#0f172a']}
+        colors={[VKU_COLORS.darkBlue, VKU_COLORS.navy, '#111827']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.idCard}
       >
         <View style={styles.idHeader}>
-          <View style={styles.vkuLogoBox}>
-            <Text style={styles.vkuLogoText}>VKU</Text>
+          <View style={styles.vkuLogoBadge}>
+            <VKULogo width={64} height={32} />
           </View>
-          <View>
+          <View style={{ flex: 1, marginLeft: 8 }}>
             <Text style={styles.idSubLabel}>VIETNAM - KOREA UNIVERSITY</Text>
             <Text style={styles.idTitle}>Digital Student Identity</Text>
           </View>
@@ -59,12 +61,19 @@ export const ProfileScreen: React.FC = () => {
             <Text style={styles.userDept} numberOfLines={1}>{user.department}</Text>
           </View>
         </View>
+
+        {/* 3-Color Horizontal Accent Strip */}
+        <View style={styles.triColorStrip}>
+          <View style={[styles.stripSegment, { backgroundColor: VKU_COLORS.red }]} />
+          <View style={[styles.stripSegment, { backgroundColor: VKU_COLORS.gold }]} />
+          <View style={[styles.stripSegment, { backgroundColor: VKU_COLORS.blue }]} />
+        </View>
       </LinearGradient>
 
       {/* Stats Counter Row */}
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
-          <Text style={[styles.statNum, { color: '#dc2626' }]}>{activeCount}</Text>
+          <Text style={[styles.statNum, { color: VKU_COLORS.red }]}>{activeCount}</Text>
           <Text style={styles.statLabel}>Active Passes</Text>
         </View>
         <View style={styles.statBox}>
@@ -72,7 +81,7 @@ export const ProfileScreen: React.FC = () => {
           <Text style={styles.statLabel}>Checked-in</Text>
         </View>
         <View style={styles.statBox}>
-          <Text style={[styles.statNum, { color: '#2563eb' }]}>{totalHours}h</Text>
+          <Text style={[styles.statNum, { color: VKU_COLORS.blue }]}>{totalHours}h</Text>
           <Text style={styles.statLabel}>Total Reserved</Text>
         </View>
       </View>
@@ -89,8 +98,8 @@ export const ProfileScreen: React.FC = () => {
           <Switch
             value={user.notificationEnabled}
             onValueChange={(val) => updateUser({ notificationEnabled: val })}
-            trackColor={{ false: '#cbd5e1', true: '#fca5a5' }}
-            thumbColor={user.notificationEnabled ? '#dc2626' : '#f8fafc'}
+            trackColor={{ false: '#cbd5e1', true: VKU_COLORS.lightGold }}
+            thumbColor={user.notificationEnabled ? VKU_COLORS.gold : '#f8fafc'}
           />
         </View>
 
@@ -107,7 +116,7 @@ export const ProfileScreen: React.FC = () => {
           <Text style={styles.resetSub}>Restores default rooms and sample reservations</Text>
         </View>
         <TouchableOpacity style={styles.resetBtn} onPress={resetDemoData}>
-          <Ionicons name="refresh-outline" size={14} color="#dc2626" />
+          <Ionicons name="refresh-outline" size={14} color={VKU_COLORS.red} />
           <Text style={styles.resetBtnText}>Reset</Text>
         </TouchableOpacity>
       </View>
@@ -128,28 +137,21 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     padding: 18,
     marginBottom: 16,
+    overflow: 'hidden',
   },
   idHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 14,
   },
-  vkuLogoBox: {
-    width: 34,
-    height: 34,
-    borderRadius: 8,
+  vkuLogoBadge: {
     backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  vkuLogoText: {
-    color: '#dc2626',
-    fontWeight: '900',
-    fontSize: 12,
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
   },
   idSubLabel: {
-    color: '#fecaca',
+    color: VKU_COLORS.gold,
     fontSize: 9,
     fontWeight: '800',
     letterSpacing: 0.5,
@@ -160,8 +162,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   activeStudentPill: {
-    marginLeft: 'auto',
-    backgroundColor: 'rgba(16, 185, 129, 0.8)',
+    backgroundColor: 'rgba(16, 185, 129, 0.9)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 10,
@@ -174,13 +175,14 @@ const styles = StyleSheet.create({
   idBody: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 12,
   },
   avatarImage: {
-    width: 60,
-    height: 60,
+    width: 62,
+    height: 62,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.7)',
+    borderColor: 'rgba(255,255,255,0.8)',
     marginRight: 12,
   },
   idInfo: {
@@ -192,20 +194,30 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   studentIdText: {
-    color: '#fde047',
-    fontSize: 12,
-    fontWeight: '700',
+    color: VKU_COLORS.gold,
+    fontSize: 13,
+    fontWeight: '800',
     marginTop: 1,
   },
   userEmail: {
-    color: '#fee2e2',
+    color: '#cbd5e1',
     fontSize: 11,
     marginTop: 2,
   },
   userDept: {
-    color: '#fca5a5',
+    color: '#94a3b8',
     fontSize: 10,
     marginTop: 1,
+  },
+  triColorStrip: {
+    flexDirection: 'row',
+    height: 4,
+    borderRadius: 2,
+    overflow: 'hidden',
+    marginTop: 4,
+  },
+  stripSegment: {
+    flex: 1,
   },
   statsRow: {
     flexDirection: 'row',
@@ -265,7 +277,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   testAlertBtn: {
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.blue,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -306,7 +318,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   resetBtnText: {
-    color: '#dc2626',
+    color: VKU_COLORS.red,
     fontSize: 11,
     fontWeight: '700',
   },

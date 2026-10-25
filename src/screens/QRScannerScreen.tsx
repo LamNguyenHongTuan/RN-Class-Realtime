@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useBookingStore } from '../store/useBookingStore';
+import { VKU_COLORS } from '../constants/colors';
 
 export const QRScannerScreen: React.FC = () => {
   const { checkInByPassCode, bookings } = useBookingStore();
@@ -66,7 +67,7 @@ export const QRScannerScreen: React.FC = () => {
           <Ionicons 
             name={result.success ? "lock-open-outline" : "alert-circle-outline"} 
             size={24} 
-            color={result.success ? "#059669" : "#dc2626"} 
+            color={result.success ? "#059669" : VKU_COLORS.red} 
           />
           <View style={{ flex: 1, marginLeft: 10 }}>
             <Text style={[styles.resultTitle, result.success ? styles.textGreen : styles.textRed]}>
@@ -106,7 +107,7 @@ export const QRScannerScreen: React.FC = () => {
       {activeBookings.length > 0 && (
         <View style={styles.quickTestCard}>
           <View style={styles.quickTestHeader}>
-            <Ionicons name="flash-outline" size={14} color="#d97706" />
+            <Ionicons name="flash" size={14} color={VKU_COLORS.gold} />
             <Text style={styles.quickTestTitle}>Quick-Test Active Passes (1-Click):</Text>
           </View>
           <View style={styles.quickTestWrap}>
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderWidth: 1,
-    borderColor: 'rgba(239, 68, 68, 0.4)',
+    borderColor: 'rgba(246, 150, 30, 0.4)',
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
@@ -171,31 +172,31 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 16,
     height: 16,
-    borderColor: '#ef4444',
+    borderColor: VKU_COLORS.red,
   },
   cornerTL: {
     top: 4,
     left: 4,
-    borderTopWidth: 2,
-    borderLeftWidth: 2,
+    borderTopWidth: 2.5,
+    borderLeftWidth: 2.5,
   },
   cornerTR: {
     top: 4,
     right: 4,
-    borderTopWidth: 2,
-    borderRightWidth: 2,
+    borderTopWidth: 2.5,
+    borderRightWidth: 2.5,
   },
   cornerBL: {
     bottom: 4,
     left: 4,
-    borderBottomWidth: 2,
-    borderLeftWidth: 2,
+    borderBottomWidth: 2.5,
+    borderLeftWidth: 2.5,
   },
   cornerBR: {
     bottom: 4,
     right: 4,
-    borderBottomWidth: 2,
-    borderRightWidth: 2,
+    borderBottomWidth: 2.5,
+    borderRightWidth: 2.5,
   },
   reticleText: {
     color: '#94a3b8',
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#10b981',
+    backgroundColor: VKU_COLORS.gold,
     marginRight: 6,
   },
   indicatorText: {
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     color: '#059669',
   },
   textRed: {
-    color: '#b91c1c',
+    color: VKU_COLORS.red,
   },
   inputCard: {
     backgroundColor: '#ffffff',
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   checkInBtn: {
-    backgroundColor: '#dc2626',
+    backgroundColor: VKU_COLORS.red,
     borderRadius: 12,
     paddingHorizontal: 16,
     justifyContent: 'center',
@@ -331,7 +332,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#10b981',
+    backgroundColor: VKU_COLORS.blue,
   },
   quickPillText: {
     fontSize: 11,
