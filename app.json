@@ -1,17 +1,20 @@
 {
   "expo": {
-    "name": "expo-vku-temp",
-    "slug": "expo-vku-temp",
+    "name": "VKU StudySpot",
+    "slug": "vku-study-booking",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "vkustudy",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "vn.udn.vku.studyspot"
     },
     "android": {
+      "package": "vn.udn.vku.studyspot",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#d32f2f",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -19,7 +22,22 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "name": "VKU StudySpot - Campus Room Booking",
+      "shortName": "VKU Study",
+      "themeColor": "#d32f2f",
+      "backgroundColor": "#f8fafc",
+      "display": "standalone"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#d32f2f"
+        }
+      ]
+    ]
   }
 }
